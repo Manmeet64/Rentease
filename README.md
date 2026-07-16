@@ -1,8 +1,38 @@
-# React + Vite
+# RentEase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A car rental web app built with React + Vite, backed by a JSON Server API.
 
-Currently, two official plugins are available:
+## Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `frontend/` — React + Vite app
+- `backend/` — JSON Server API (`db.json` + `json-server`)
+
+## Running locally
+
+**Backend** (in one terminal):
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Runs on `http://localhost:3000`.
+
+**Frontend** (in another terminal):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Copy `frontend/.env.example` to `frontend/.env.local` and fill in:
+
+- `VITE_GOOGLE_MAPS_API_KEY` — a Google Maps Platform API key (Maps JavaScript API, Places API, Geocoding API enabled)
+- `VITE_API_BASE_URL` — the backend URL (`http://localhost:3000` locally)
+
+## Deployment
+
+- **Backend** → Render, using `backend/render.yaml`. Root directory: `backend`.
+- **Frontend** → Vercel, with root directory `frontend`. Set `VITE_GOOGLE_MAPS_API_KEY` and `VITE_API_BASE_URL` (pointing at the deployed Render URL) as environment variables.
