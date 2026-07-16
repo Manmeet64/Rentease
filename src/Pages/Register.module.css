@@ -1,9 +1,9 @@
 /* Register.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
 body {
-    font-family: 'Sarabun', sans-serif;
+    font-family: "Sarabun", sans-serif;
 }
 
 .section {
@@ -14,9 +14,11 @@ body {
     align-items: center;
     text-align: left;
     background-image: linear-gradient(
-        rgba(0, 0, 0, 0.5), /* Black with 50% opacity */
-        rgba(0, 0, 0, 0.5) /* Black with 50% opacity */
-      ), url('https://images.unsplash.com/photo-1526726538690-5cbf956ae2fd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            rgba(0, 0, 0, 0.5),
+            /* Black with 50% opacity */ rgba(0, 0, 0, 0.5)
+                /* Black with 50% opacity */
+        ),
+        url("https://images.unsplash.com/photo-1526726538690-5cbf956ae2fd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -39,14 +41,19 @@ body {
     max-width: 600px; /* Increased width to match form_container */
     width: 100%; /* Ensure it takes the full width of its container */
     padding: 2em;
-    background-color: rgba(251, 247, 243, 0.8); /* Background color for form and data list with opacity */
+    background-color: rgba(
+        251,
+        247,
+        243,
+        0.8
+    ); /* Background color for form and data list with opacity */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 2em;
     color: black; /* Text color against the background */
     z-index: 1; /* Ensure form and data list appear above the background */
     text-align: left; /* Align text content to the left */
-    font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+    font-family: "Roboto", sans-serif; /* Apply Roboto font */
 }
 
 .input_group,
@@ -111,7 +118,7 @@ body {
 .button_submit {
     width: 100%;
     padding: 0.75em;
-    background-color: #5796FF;
+    background-color: #5796ff;
     color: white;
     border: none;
     border-radius: 5px;
@@ -153,7 +160,9 @@ body {
     .input_group_pass select {
         padding: 0.4em;
         font-size: 0.9em;
-        width: calc(100% - 0.8em); /* Adjust input width to account for padding */
+        width: calc(
+            100% - 0.8em
+        ); /* Adjust input width to account for padding */
     }
 
     .button_submit {
@@ -182,7 +191,9 @@ body {
     .input_group_pass select {
         padding: 0.3em;
         font-size: 0.8em;
-        width: calc(100% - 0.6em); /* Adjust input width to account for padding */
+        width: calc(
+            100% - 0.6em
+        ); /* Adjust input width to account for padding */
     }
 
     .button_submit {

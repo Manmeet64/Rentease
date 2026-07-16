@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCrown, faUser } from "@fortawesome/free-solid-svg-icons";
 import normalLogo from "../assets/logo2.png"; // Adjust the path to your normal logo file
 import scrolledLogo from "../assets/logo1.png"; // Adjust the path to your scrolled logo file
 import styles from "./Navbarcomp.module.css";
-import { Link, useLocation, useNavigate} from "react-router-dom"; // Use Link from react-router-dom for better navigation
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Use Link from react-router-dom for better navigation
 
 const Navbarcomp = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -13,7 +13,7 @@ const Navbarcomp = () => {
     const [loggedInUser, setLoggedInUser] = useState(null);
     const location = useLocation();
     const [activeLink, setActiveLink] = useState(location.pathname);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -34,18 +34,18 @@ const Navbarcomp = () => {
             setPrevScrollPos(currentScrollPos);
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener("scroll", handleScroll);
 
         // Clean up the event listener
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         };
     }, [prevScrollPos]);
 
     useEffect(() => {
         const fetchLoggedInUser = async () => {
             try {
-                const response = await fetch("http://localhost:3000/users");
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users`);
                 if (response.ok) {
                     const users = await response.json();
                     const loggedInUser = users.find((user) => user.isLoggedIn);
@@ -68,11 +68,34 @@ const Navbarcomp = () => {
     }, [location.pathname]);
 
     return (
-        <nav className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ''}`} style={{ top: navbarTop }}>
+        <nav
+            className={`${styles.navbar} ${
+                scrolled ? styles.navbarScrolled : ""
+            }`}
+            style={{ top: navbarTop }}
+        >
             <div className={styles.navbarLeft}>
-                <Link to="/home" className={activeLink === "/home" ? styles.active : ""} onClick={() => setActiveLink("/home")}>Home</Link>
-                <Link to="/drivers" className={activeLink === "/drivers" ? styles.active : ""} onClick={() => setActiveLink("/drivers")}>Drivers</Link>
-                <Link to="#about" className={activeLink === "#about" ? styles.active : ""} onClick={() => setActiveLink("#about")}>About Us</Link>
+                <Link
+                    to="/home"
+                    className={activeLink === "/home" ? styles.active : ""}
+                    onClick={() => setActiveLink("/home")}
+                >
+                    Home
+                </Link>
+                <Link
+                    to="/drivers"
+                    className={activeLink === "/drivers" ? styles.active : ""}
+                    onClick={() => setActiveLink("/drivers")}
+                >
+                    Drivers
+                </Link>
+                <Link
+                    to="/alex"
+                    className={activeLink === "/alex" ? styles.active : ""}
+                    onClick={() => setActiveLink("/alex")}
+                >
+                    Alex
+                </Link>
             </div>
             <div className={styles.navbarLogo}>
                 <Link to="/home">
@@ -84,19 +107,46 @@ const Navbarcomp = () => {
                 </Link>
             </div>
             <div className={styles.navbarRight}>
-                <Link to="/search">
-                    <div className={styles.searchContainer}>
-                        <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
-                    </div>
+                <Link to="/sub">
+                    {loggedInUser &&
+                    loggedInUser.membership?.plan !== "premium" ? (
+                        <div className={styles.searchContainer}>
+                            <FontAwesomeIcon
+                                icon={faCrown}
+                                className={styles.searchIcon}
+                            />
+                            <span className={styles.searchLabel}>Upgrade</span>{" "}
+                            {/* Add this line */}
+                        </div>
+                    ) : (
+                        <div className={styles.searchContainer}>
+                            <FontAwesomeIcon
+                                icon={faCrown}
+                                className={styles.searchIcon}
+                            />
+                            <span className={styles.searchLabel}>Premium</span>{" "}
+                            {/* Add this line */}
+                        </div>
+                    )}
                 </Link>
                 {loggedInUser ? (
-                    <span  onClick={()=>{
-                        navigate("/profile")
-                    }} className={styles.userName}>{loggedInUser.name}</span>
+                    <span
+                        onClick={() => navigate("/profile")}
+                        className={`${styles.userName} ${styles.profileContainer}`}
+                    >
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            className={styles.userIcon}
+                        />
+                        {loggedInUser.name}
+                    </span>
                 ) : (
                     <div className={styles.signContainer}>
-                        <a href="/login">Log In</a>
-                        <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
+                        <Link to="/login">Log In</Link>
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            className={styles.userIcon}
+                        />
                     </div>
                 )}
             </div>

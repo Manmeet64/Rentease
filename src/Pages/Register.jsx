@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styles from  "./Register.module.css";
+import styles from "./Register.module.css";
 import { useNavigate } from "react-router-dom";
 import Navbarcomp from "../components/Navbarcomp";
 import AboutUs from "../components/AboutUs";
-
 
 const Register = () => {
     let navigate = useNavigate();
@@ -15,6 +14,42 @@ const Register = () => {
         city: "",
         profileImagePath: "", // Holds image path
         isLoggedIn: false, // Add isLoggedIn property with default value false
+        membership: {
+            plan: "freemium",
+            points: 0,
+            badge1: {
+                name: "Traveller-Badge",
+                active: false,
+                validity: 0,
+                img: "src/assets/Traveller.jpeg",
+            },
+            badge2: {
+                name: "Early-Bird-Badge",
+                active: false,
+                validity: 0,
+                img: "src/assets/EarlyBird.jpeg",
+            },
+            badge3: {
+                name: "Long-Tripper-Badge",
+                active: false,
+                validity: 0,
+                img: "src/assets/LongTripper.jpeg",
+            },
+            levels: {
+                bronze: {
+                    active: false,
+                    img: "https://i.pinimg.com/564x/26/66/0d/26660de5735b578a2b9b8e06be424b07.jpg",
+                },
+                silver: {
+                    active: false,
+                    img: "https://i.pinimg.com/564x/66/ff/da/66ffdad88ed4a1226698938aa3cd2870.jpg",
+                },
+                gold: {
+                    active: false,
+                    img: "https://i.pinimg.com/564x/4a/79/50/4a795033aca7b684b9cfc67518b3e9b2.jpg",
+                },
+            },
+        },
     });
 
     const [previewUrl, setPreviewUrl] = useState("");
@@ -27,7 +62,7 @@ const Register = () => {
 
     const fetchExistingUsers = async () => {
         try {
-            const response = await fetch("http://localhost:3000/users");
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users`);
             if (response.ok) {
                 const data = await response.json();
                 setUsers(data);
@@ -80,7 +115,7 @@ const Register = () => {
             console.log(formData);
             // Prepare form data for submission
             try {
-                const response = await fetch("http://localhost:3000/users", {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -97,8 +132,44 @@ const Register = () => {
                         email: "",
                         gender: "",
                         city: "",
-                        profileImagePath: "", // Clear image path
-                        isLoggedIn: false, // Reset to default value
+                        profileImagePath: "", // Holds image path
+                        isLoggedIn: false, // Add isLoggedIn property with default value false
+                        membership: {
+                            plan: "freemium",
+                            points: 0,
+                            badge1: {
+                                name: "Traveller-Badge",
+                                active: false,
+                                validity: 0,
+                                img: "src/assets/Traveller.jpeg",
+                            },
+                            badge2: {
+                                name: "Early-Bird-Badge",
+                                active: false,
+                                validity: 0,
+                                img: "src/assets/EarlyBird.jpeg",
+                            },
+                            badge3: {
+                                name: "Long-Tripper-Badge",
+                                active: false,
+                                validity: 0,
+                                img: "src/assets/LongTripper.jpeg",
+                            },
+                            levels: {
+                                bronze: {
+                                    active: false,
+                                    img: "https://i.pinimg.com/564x/26/66/0d/26660de5735b578a2b9b8e06be424b07.jpg",
+                                },
+                                silver: {
+                                    active: false,
+                                    img: "https://i.pinimg.com/564x/66/ff/da/66ffdad88ed4a1226698938aa3cd2870.jpg",
+                                },
+                                gold: {
+                                    active: false,
+                                    img: "https://i.pinimg.com/564x/4a/79/50/4a795033aca7b684b9cfc67518b3e9b2.jpg",
+                                },
+                            },
+                        },
                     });
                     setPreviewUrl("");
                     navigate("/login");
@@ -115,9 +186,8 @@ const Register = () => {
         <>
             <Navbarcomp />
             <section className={styles.section}>
-
                 <form onSubmit={handleSubmit} className={styles.form_container}>
-<h1>Register Now</h1>
+                    <h1>Register Now</h1>
                     <div className={styles.input_group}>
                         <label htmlFor="name">Name:</label>
                         <input
@@ -209,10 +279,9 @@ const Register = () => {
                     <button type="submit" className={styles.button_submit}>
                         Submit
                     </button>
-
                 </form>
-                </section>
-<AboutUs/>
+            </section>
+            <AboutUs />
         </>
     );
 };

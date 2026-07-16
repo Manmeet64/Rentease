@@ -24,100 +24,98 @@
 
 // export default Make;
 
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
-  /* Styles for the outer container */
+    /* Styles for the outer container */
 `;
 
 const StepContainer = styled.div`
-  /* Styles for each step container */
+    /* Styles for each step container */
 `;
 
 const Title = styled.div`
-  /* Styles for the title "Make It Happens In 4 Steps" */
+    /* Styles for the title "Make It Happens In 4 Steps" */
 `;
 
 const StepContent = styled.div`
-  /* Styles for the content of each step */
+    /* Styles for the content of each step */
 `;
 
 const StepNumber = styled.div`
-  /* Styles for the step number */
+    /* Styles for the step number */
 `;
 
 function Make() {
-  return (
-    <Container>
-      <div className="div">
-        <Title>Make It Happens In 4 Steps</Title>
+    return (
+        <Container>
+            <div className="div">
+                <Title>Make It Happens In 4 Steps</Title>
 
-        {/* Step 1 */}
-        <StepContainer>
-          <StepContent>
-            <div>Choose a vehicle</div>
-            <div>
-              Unlock unparalleled adventures and
-              <br />
-              memorable journeys with our vast
-              <br />
-              fleet of vehicles tailored to suit
-              <br />
-              every need, taste, and destination.
+                {/* Step 1 */}
+                <StepContainer>
+                    <StepContent>
+                        <div>Choose a vehicle</div>
+                        <div>
+                            Unlock unparalleled adventures and
+                            <br />
+                            memorable journeys with our vast
+                            <br />
+                            fleet of vehicles tailored to suit
+                            <br />
+                            every need, taste, and destination.
+                        </div>
+                    </StepContent>
+                    <StepNumber>1</StepNumber>
+                </StepContainer>
+
+                {/* Step 2 */}
+                <StepContainer>
+                    <StepNumber>2</StepNumber>
+                    <StepContent>
+                        <div>Pick location & date</div>
+                        <div>
+                            Pick your ideal location and date, <br />
+                            and let us take you on a journey <br />
+                            filled with convenience, flexibility,
+                            <br />
+                            and unforgettable experiences.
+                        </div>
+                    </StepContent>
+                </StepContainer>
+
+                {/* Step 3 */}
+                <StepContainer>
+                    <StepContent>
+                        <div>Make a booking</div>
+                        <div>
+                            Secure your reservation with ease, <br />
+                            unlocking a world of possibilities
+                            <br />
+                            and embarking on your next <br />
+                            adventure with confidence.
+                        </div>
+                    </StepContent>
+                    <StepNumber>3</StepNumber>
+                </StepContainer>
+
+                {/* Step 4 */}
+                <StepContainer>
+                    <StepNumber>4</StepNumber>
+                    <StepContent>
+                        <div>Sit back & relax</div>
+                        <div>
+                            Hassle-free convenience as we <br />
+                            take care of every detail, allowing <br />
+                            you to unwind and embrace a<br />
+                            journey filled comfort.
+                        </div>
+                    </StepContent>
+                </StepContainer>
             </div>
-          </StepContent>
-          <StepNumber>1</StepNumber>
-        </StepContainer>
-
-        {/* Step 2 */}
-        <StepContainer>
-          <StepNumber>2</StepNumber>
-          <StepContent>
-            <div>Pick location & date</div>
-            <div>
-              Pick your ideal location and date, <br />
-              and let us take you on a journey <br />
-              filled with convenience, flexibility,
-              <br />
-              and unforgettable experiences.
-            </div>
-          </StepContent>
-        </StepContainer>
-
-        {/* Step 3 */}
-        <StepContainer>
-          <StepContent>
-            <div>Make a booking</div>
-            <div>
-              Secure your reservation with ease, <br />
-              unlocking a world of possibilities
-              <br />
-              and embarking on your next <br />
-              adventure with confidence.
-            </div>
-          </StepContent>
-          <StepNumber>3</StepNumber>
-        </StepContainer>
-
-        {/* Step 4 */}
-        <StepContainer>
-          <StepNumber>4</StepNumber>
-          <StepContent>
-            <div>Sit back & relax</div>
-            <div>
-              Hassle-free convenience as we <br />
-              take care of every detail, allowing <br />
-              you to unwind and embrace a<br />
-              journey filled comfort.
-            </div>
-          </StepContent>
-        </StepContainer>
-
-      </div>
-    </Container>
-  );
+        </Container>
+    );
 }
 
 export default Make;
-

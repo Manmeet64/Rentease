@@ -1,5 +1,5 @@
 /* Container Styles */
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
 .container {
     width: 900px;
@@ -7,11 +7,10 @@
     padding: 20px;
     background-color: #ffffff;
     background-attachment: fixed;
-    font-family: 'Sarabun', sans-serif;
+    font-family: "Sarabun", sans-serif;
 
     border-radius: 10px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,7 +41,7 @@
 }
 
 .categoryHeading {
-    font-size: 1.7em;    
+    font-size: 1.7em;
     color: #0e0d0d;
     margin-bottom: 10px;
     text-align: left;
@@ -68,17 +67,22 @@
 }
 
 .statusScheduled {
-    color: #ffa500;
+    color: #ffa500; /* Yellow for Scheduled */
+    font-weight: bold;
+}
+
+.statusRunning {
+    color: #ff4500; /* Orange for Running */
     font-weight: bold;
 }
 
 .statusCompleted {
-    color: #28a745;
+    color: #28a745; /* Green for Completed */
     font-weight: bold;
 }
 
 .statusCancelled {
-    color: #dc3545;
+    color: #dc3545; /* Red for Cancelled */
     font-weight: bold;
 }
 
@@ -101,19 +105,21 @@
     flex-direction: column;
     align-items: center;
     min-height: 50vh;
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)
-    ), url('https://images.unsplash.com/photo-1526726538690-5cbf956ae2fd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("https://images.unsplash.com/photo-1526726538690-5cbf956ae2fd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
-.header_image p {
-    font-size: 5em;
+.header_image h1 {
+    font-family: var(--font-display);
+    font-size: 3.2em;
     color: #ffffff;
+    text-align: center;
+    padding: 0 20px;
+    margin: 0;
 }
 
 /* Header Styles */
@@ -138,8 +144,8 @@
         font-size: 1.5em;
     }
 
-    .header_image p {
-        font-size: 3em;
+    .header_image h1 {
+        font-size: 2.2em;
     }
 }
 
@@ -152,7 +158,7 @@
         font-size: 1.3em;
     }
 
-    .header_image p {
-        font-size: 2em;
+    .header_image h1 {
+        font-size: 1.8em;
     }
 }

@@ -12,14 +12,19 @@ import CarMatch from "./CarMatch";
 // Define the libraries outside of the component
 const MAP_LIBRARIES = ["places"];
 
-function Map(props) {
-    const { location } = useGetLocation();
+// Fallback center (New Delhi) used when geolocation is denied or unavailable
+const FALLBACK_CENTER = { lat: 28.6139, lng: 77.209 };
 
-    // Provide default coordinates in case location is not yet available
-    const defaultCenter = {
-        lat: location?.latitude || 0,
-        lng: location?.longitude || 0,
-    };
+function Map(props) {
+    const { location, error: locationError } = useGetLocation();
+
+    const hasLocation =
+        typeof location?.latitude === "number" &&
+        typeof location?.longitude === "number";
+
+    const defaultCenter = hasLocation
+        ? { lat: location.latitude, lng: location.longitude }
+        : FALLBACK_CENTER;
 
     const [center, setCenter] = useState(defaultCenter);
     const [map, setMap] = useState(null);
@@ -27,23 +32,26 @@ function Map(props) {
     const [distance, setDistance] = useState("");
     const [duration, setDuration] = useState("");
     const [zoom, setZoom] = useState(16);
+    const [time, setTime] = useState("");
+    const [routeError, setRouteError] = useState("");
 
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCi7wvXEC0r0td0KSSoeXzJNrUv5fYMNgw", // Replace with your actual API key
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         libraries: MAP_LIBRARIES,
     });
 
     useEffect(() => {
-        if (location) {
+        if (hasLocation) {
             setCenter({
                 lat: location.latitude,
                 lng: location.longitude,
             });
         }
-    }, [location]);
+    }, [hasLocation, location]);
 
     useEffect(() => {
-        if (props.origin && isLoaded && !props.chat) {
+        if (props.origin && props.destination && isLoaded && !props.chat) {
+            setRouteError("");
             const directionsService = new google.maps.DirectionsService();
             directionsService
                 .route({
@@ -53,11 +61,15 @@ function Map(props) {
                 })
                 .then((results) => {
                     setDirectionResponse(results);
+                    setTime(results.routes[0].legs[0].duration.text);
                     setDistance(results.routes[0].legs[0].distance.text);
                     setDuration(results.routes[0].legs[0].duration.value);
                 })
                 .catch((error) => {
                     console.error("Error fetching directions:", error);
+                    setRouteError(
+                        "Couldn't find a route between those locations. Try picking suggestions from the dropdown instead of typing a full address."
+                    );
                 });
         }
     }, [isLoaded, props.origin, props.destination, props.chat]);
@@ -73,6 +85,8 @@ function Map(props) {
         setDistance("");
         setDuration("");
         setDirectionResponse(null);
+        setTime("");
+        setRouteError("");
     }, []);
 
     const centerPosition = useCallback(() => {
@@ -82,7 +96,7 @@ function Map(props) {
         }
     }, [map, center]);
 
-    if (!isLoaded || !location) {
+    if (!isLoaded) {
         return <div>Loading...</div>;
     }
 
@@ -108,19 +122,30 @@ function Map(props) {
                 </GoogleMap>
             </div>
             <div className={styles.btns}>
-                <button onClick={clearRoute}>Clear</button>
-                <button onClick={centerPosition}>Center</button>
+                <div className={styles.dis}>
+                    <p>Duration: {time}</p>
+                    <p>Distance: {distance}</p>
+                </div>
+                <div className={styles.btns1}>
+                    <button onClick={clearRoute}>Clear</button>
+                    <button onClick={centerPosition}>Center</button>
+                </div>
             </div>
-            <div className={styles.carData}>
-                {distance !== "" && duration !== "" && !props.chat && (
-                    <CarMatch
-                        distance={distance}
-                        duration={duration}
-                        people={props.people}
-                        budget={props.budget}
-                        newChat={props.chat}
-                    />
+            <div className={styles.details}>
+                {routeError && !props.chat && (
+                    <p className={styles.routeError}>{routeError}</p>
                 )}
+                <div className={styles.carData}>
+                    {distance !== "" && duration !== "" && !props.chat && (
+                        <CarMatch
+                            distance={distance}
+                            duration={duration}
+                            people={props.people}
+                            budget={props.budget}
+                            newChat={props.chat}
+                        />
+                    )}
+                </div>
             </div>
         </>
     );

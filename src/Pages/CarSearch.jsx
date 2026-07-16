@@ -3,7 +3,6 @@ import "./CarSearch.css";
 import Car from "../components/Car";
 import Navbarcomp from "../components/Navbarcomp";
 import AboutUs from "../components/AboutUs";
-import useGetLocation from "../components/useGetLocation"; // Import your custom hook
 
 const CarSearch = () => {
     const [cars, setCars] = useState([]);
@@ -16,26 +15,18 @@ const CarSearch = () => {
         priceRange: 1000,
     });
     const [searchTerm, setSearchTerm] = useState("");
-    const [locality, setLocality] = useState("");
-    const [formatted, setFormatted] = useState("");
-
-    // Custom hook to get user location
-    const { location, error } = useGetLocation();
-    console.log(location);
 
     useEffect(() => {
         fetchCars();
     }, []);
 
     useEffect(() => {
-        if (location) {
-            fetchLocality(location);
-        }
-    }, [location]);
+        applyFilters();
+    }, [cars, filters, searchTerm]);
 
     const fetchCars = async () => {
         try {
-            const response = await fetch("http://localhost:3000/cars");
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/cars`);
             if (response.ok) {
                 const data = await response.json();
                 setCars(data);
@@ -48,45 +39,8 @@ const CarSearch = () => {
         }
     };
 
-    const fetchLocality = async (location) => {
-        try {
-            const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyCi7wvXEC0r0td0KSSoeXzJNrUv5fYMNgw`
-            );
-            const data = await response.json();
-            if (data.results.length > 0) {
-                const formattedAddress = data.results[0].formatted_address;
-                setFormatted(formattedAddress);
-                const localityComponent =
-                    data.results[0].address_components.find((component) =>
-                        component.types.includes("locality")
-                    );
-                setLocality(
-                    localityComponent
-                        ? localityComponent.long_name.toLowerCase()
-                        : ""
-                );
-                setFormatted(formattedAddress);
-            } else {
-                console.log("Failed to fetch address");
-            }
-        } catch (error) {
-            console.log("Error fetching address:", error);
-        }
-    };
-
     const applyFilters = () => {
         let filtered = cars;
-        console.log("Hello", locality);
-        // Filter by locality
-        if (locality) {
-            filtered = filtered.filter(
-                (car) =>
-                    car.location &&
-                    car.location.locationCity &&
-                    car.location.locationCity.toLowerCase() === locality
-            );
-        }
 
         // Filter by fuel type
         if (filters.fuelType.length > 0) {
@@ -134,38 +88,32 @@ const CarSearch = () => {
     };
 
     const handleFilterChange = (filterType, value) => {
-        const updatedFilters = { ...filters };
-        const index = updatedFilters[filterType].indexOf(value);
+        setFilters((prevFilters) => {
+            const currentValues = prevFilters[filterType];
+            const updatedValues = currentValues.includes(value)
+                ? currentValues.filter((v) => v !== value)
+                : [...currentValues, value];
 
-        if (index === -1) {
-            updatedFilters[filterType].push(value);
-        } else {
-            updatedFilters[filterType].splice(index, 1);
-        }
-
-        setFilters(updatedFilters);
-        applyFilters();
+            return { ...prevFilters, [filterType]: updatedValues };
+        });
     };
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-        applyFilters();
     };
 
     const handlePriceRangeChange = (event) => {
-        setFilters({ ...filters, priceRange: parseInt(event.target.value) });
-        applyFilters();
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            priceRange: parseInt(event.target.value),
+        }));
     };
-
-    console.log(locality);
-    console.log(formatted);
-    console.log(filteredCars);
 
     return (
         <>
             <Navbarcomp />
             <div className="header-image">
-                <p>Car Search</p>
+                <h1>Find Your Car</h1>
                 <div className="search-bar">
                     <input
                         type="text"
@@ -178,9 +126,6 @@ const CarSearch = () => {
             <div className="car-search-container">
                 <div className="sidebar">
                     <h3>Filters</h3>
-                    <button className="search-btn" onClick={applyFilters}>
-                        Search
-                    </button>
                     <div className="filter-group">
                         <h4>Fuel Type</h4>
                         <label>

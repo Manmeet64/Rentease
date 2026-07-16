@@ -1,5 +1,5 @@
 /* Navbarcomp.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
 /* Base Styles */
 .navbar {
@@ -15,18 +15,27 @@
     left: 0;
     right: 0;
     z-index: 1000; /* Ensure it's above other content */
-    font-family: 'Sarabun', sans-serif;
-
+    font-family: var(--font-body);
 }
 
 .navbarScrolled {
-    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background color when scrolled */
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.9
+    ); /* Semi-transparent white background color when scrolled */
     color: black;
 }
 
 .navbarScrolled .searchContainer {
-    padding: 12px;
-    background-color: black; /* Change background to black when scrolled */
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, color 0.3s ease;
     color: white; /* Change text color to white when scrolled */
 }
 
@@ -44,6 +53,11 @@
     padding: 12px 30px;
     border-radius: 50px;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+.navbarScrolled .searchLabel {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin-left: 8px; /* Adjust spacing as needed */
 }
 
 .navbarScrolled .signContainer a {
@@ -65,7 +79,6 @@
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    
 }
 
 .navbarLeft a {
@@ -73,7 +86,7 @@
     text-decoration: none;
     padding: 10px 30px;
     font-size: 1.3rem;
-    font-weight: normal;
+    font-weight: bold;
     text-transform: uppercase;
     align-items: center;
     border-top: 2px solid transparent; /* Border for the line effect */
@@ -82,7 +95,6 @@
     position: relative;
 }
 .navbarLeft a + a {
-
     margin-left: 70px; /* Adjust this value for horizontal spacing between links */
 }
 
@@ -98,13 +110,19 @@
     transition: background-color 0.3s ease;
 }
 
-.navbarLeft a.active::before,
+.navbarLeft a.active::before {
+    background: linear-gradient(to left, #5796ff, #c2d6f9);
+}
 .navbarLeft a:hover::before {
     background-color: black; /* Change line color on hover or when active */
 }
 
-
-.navbarLeft a.active,
+.navbarLeft a.active {
+    background: linear-gradient(to left, #5796ff, #c2d6f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
 .navbarLeft a:hover {
     color: black;
 }
@@ -114,17 +132,17 @@
 }
 
 .navbarScrolled .navbarLeft a::before {
-
     background-color: #000000; /* Change upperline color to black when scrolled */
 }
 
-.navbarScrolled .navbarLeft a.active::before,
-.navbarScrolled .navbarLeft a:hover::before {
-    background-color: #B2BAC7; /* Change line color when scrolled and active or hovered */
-color: #B2BAC7;
+.navbarScrolled .navbarLeft a.active::before {
+    background-color: #b2bac7; /* Change line color when scrolled and active or hovered */
+    color: #b2bac7;
 }
-
-
+.navbarScrolled .navbarLeft a:hover::before {
+    background-color: #b2bac7; /* Change line color when scrolled and active or hovered */
+    color: #b2bac7;
+}
 
 .navbarLogo {
     margin-left: 30px; /* Add some margin to move the logo a little right */
@@ -143,21 +161,14 @@ color: #B2BAC7;
 }
 
 .searchContainer {
+    margin-right: 20px;
     display: flex;
     align-items: center;
-    border: 1px solid rgb(255, 255, 255);
-    padding: 12px;
-    border-radius: 50%;
-    margin-right: 20px;
-    background-color: white; /* Initial background color */
-    color: black; /* Initial text color */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for color changes */
-    margin-right: 60px; /* Add some margin to move the logo a little right */
-}
-
-.searchContainer:hover {
-    background-color: black;
-    color: white;
+    background-color: rgb(255, 252, 252);
+    color: rgb(0, 0, 0);
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .searchIcon {
@@ -166,8 +177,10 @@ color: #B2BAC7;
     transition: color 0.3s ease;
 }
 
-.searchContainer:hover .searchIcon {
-    color: white;
+.searchLabel {
+    font-size: 1.1rem;
+    margin-left: 8px; /* Adjust spacing as needed */
+    color: #000; /* Adjust color as needed */
 }
 
 .signContainer {
@@ -204,36 +217,65 @@ color: #B2BAC7;
         font-size: 1rem; /* Adjust font size for smaller screens */
     }
 
+    .navbarLeft a + a {
+        margin-left: 30px;
+    }
+
     .navbarLogo img {
         height: 40px; /* Adjust size as needed */
-        margin-right: auto; /* Push the logo to the extreme left */
+    }
+}
+
+@media (max-width: 900px) {
+    .navbar {
+        flex-wrap: wrap;
+        row-gap: 10px;
+        padding: 10px 16px;
+    }
+
+    .navbarLogo {
+        order: 1;
+        flex-grow: 0;
+        margin-left: 0;
+    }
+
+    .navbarRight {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .navbarLeft {
+        order: 3;
+        position: static;
+        left: auto;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .navbarLeft a {
+        margin-top: 0;
     }
 }
 
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: column; /* Stack items vertically */
-        padding: 10px 10px;
-    }
-
-    .navbarLeft,
-    .navbarRight {
-        justify-content: center;
-    }
-
     .navbarLeft a,
     .navbarRight a {
         padding: 5px 10px;
         font-size: 1rem; /* Adjust font size for smaller screens */
     }
 
+    .navbarLeft a + a {
+        margin-left: 20px;
+    }
+
     .navbarLogo img {
-        height: 30px; /* Adjust size as needed */
+        height: 40px; /* Adjust size as needed */
     }
 
     .searchContainer {
         width: auto; /* Maintain width on smaller screens */
-        margin: 10px 0; /* Add some margin for spacing */
     }
 
     .signContainer {
@@ -243,27 +285,29 @@ color: #B2BAC7;
 
 @media (max-width: 480px) {
     .navbar {
-        padding: 5px 5px;
+        padding: 8px 10px;
     }
 
     .navbarLeft a,
     .navbarRight a {
-        font-size: 0.9rem; /* Adjust font size for smaller screens */
-        padding: 5px 5px;
+        font-size: 0.85rem; /* Adjust font size for smaller screens */
+        padding: 5px 8px;
+    }
+
+    .navbarLeft a + a {
+        margin-left: 10px;
     }
 
     .navbarLogo img {
-        height: 50px; /* Adjust size as needed */
+        height: 32px; /* Adjust size as needed */
     }
 
-    .searchContainer {
-        flex-direction: column;
-        padding: 5px;
-        width: auto;
-    }
-
+    .searchContainer,
     .signContainer {
-        padding: 5px;
-        font-size: 0.9rem; /* Adjust font size for smaller screens */
+        padding: 8px 14px;
+    }
+
+    .searchLabel {
+        font-size: 0.9rem;
     }
 }

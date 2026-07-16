@@ -10,7 +10,7 @@ const Review = () => {
 
     const fetchReviews = async () => {
         try {
-            const response = await fetch("http://localhost:3000/cars"); // Replace with your actual endpoint
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/cars`); // Replace with your actual endpoint
             if (response.ok) {
                 const data = await response.json();
                 // Limit to 4 reviews

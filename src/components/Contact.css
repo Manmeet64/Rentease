@@ -1,5 +1,5 @@
 /* Contact Container */
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
 .Contact-container {
     display: flex;
@@ -9,17 +9,14 @@
     margin: 0 auto;
     padding: 20px;
     min-height: 50vh;
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)
-    ), url('https://images.unsplash.com/photo-1494905998402-395d579af36f?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("https://images.unsplash.com/photo-1494905998402-395d579af36f?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    font-family: 'Sarabun', sans-serif;
-
+    font-family: "Sarabun", sans-serif;
 }
 
 /* Contact Text */
@@ -87,7 +84,8 @@
         align-items: center;
     }
 
-    .Contact-text, .Contact-info {
+    .Contact-text,
+    .Contact-info {
         flex: 0 0 100%; /* Full width for smaller screens */
         padding-right: 0; /* Remove right padding */
         padding-top: 20px; /* Adjust top padding */
@@ -105,7 +103,8 @@
         font-size: 2em; /* Further reduce font size */
     }
 
-    .Contact-info2, .Contact-info3 {
+    .Contact-info2,
+    .Contact-info3 {
         font-size: 1.5em; /* Further reduce font size */
     }
 
@@ -127,7 +126,8 @@
         font-size: 1.8em; /* Further reduce font size */
     }
 
-    .Contact-info2, .Contact-info3 {
+    .Contact-info2,
+    .Contact-info3 {
         font-size: 1.2em; /* Further reduce font size */
     }
 

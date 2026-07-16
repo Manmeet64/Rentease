@@ -1,10 +1,10 @@
 /* CarList.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
 .carListContainer {
     width: 100%; /* Full width */
     overflow: hidden; /* Hide overflow */
-    background-color: #E5E8EF;
+    background-color: #e5e8ef;
     background-attachment: fixed;
 
     padding: 30px;
@@ -14,26 +14,79 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-family: 'Sarabun', sans-serif;
-
+    font-family: var(--font-body);
 }
 
 .carouselContainer {
+    position: relative;
     width: 100%;
+    max-width: 1200px;
+    margin: 20px auto 0;
+}
+
+.embla {
     overflow: hidden;
-    margin-top: 20px;
-    min-height: 40vh;
+    width: 100%;
 }
 
-/* Optional: Adjust carousel slide styles */
-.carousel .slide {
+.emblaContainer {
     display: flex;
-    justify-content: space-around;
+    gap: 20px;
 }
 
-/* Hide default navigation buttons */
-.carousel .control-dots {
-    display: none;
+.emblaSlide {
+    flex: 0 0 85%;
+    min-width: 0;
+}
+
+@media (min-width: 640px) {
+    .emblaSlide {
+        flex: 0 0 45%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .emblaSlide {
+        flex: 0 0 30%;
+    }
+}
+
+.emblaButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #2d2d2d;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.emblaButton:hover {
+    background-color: #5796ff;
+    color: #ffffff;
+}
+
+.emblaButtonPrev {
+    left: -10px;
+}
+
+.emblaButtonNext {
+    right: -10px;
+}
+
+@media (max-width: 768px) {
+    .emblaButton {
+        display: none;
+    }
 }
 
 /* Text above carousel */
@@ -41,7 +94,7 @@
     margin-bottom: 10px;
     font-size: 20px;
     font-weight: bold;
-    color: #5796FF;
+    color: #5796ff;
 }
 
 .carouselText2 {

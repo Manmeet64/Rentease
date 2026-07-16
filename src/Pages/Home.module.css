@@ -3,7 +3,8 @@
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    background: url('https://r4.wallpaperflare.com/wallpaper/396/917/215/porsche-porsche-taycan-turbo-blue-car-car-electric-car-hd-wallpaper-1ec8e37e750de53e8deaa201c9febe44.jpg') no-repeat center center;
+    background: url("https://r4.wallpaperflare.com/wallpaper/396/917/215/porsche-porsche-taycan-turbo-blue-car-car-electric-car-hd-wallpaper-1ec8e37e750de53e8deaa201c9febe44.jpg")
+        no-repeat center center;
     background-size: cover;
     padding: 20px;
     min-height: 700px; /* Adjust this value as needed */
@@ -12,54 +13,55 @@
 .home_container {
     display: flex;
     flex-direction: row; /* Align items in a row */
+    flex-wrap: wrap; /* Allow items to drop to new lines instead of forcing overflow */
     justify-content: center; /* Center items horizontally */
     align-items: center; /* Center items vertically */
+    width: 100%;
+    max-width: 1100px;
     max-height: 1400px;
     padding: 10px;
+    box-sizing: border-box;
     background-color: #e5e8efe6; /* Slightly transparent background */
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .input_group {
-    
     display: flex;
     flex-direction: column;
     margin: 5px; /* Add some margin for spacing between items */
-    flex: 1; /* Allow items to grow and take up available space */
-    min-width: 250px; /* Increase the minimum width for smaller screens */
-    max-width: 200px; /* Increase the maximum width to maintain alignment */
+    flex: 1 1 200px; /* Allow items to grow and shrink */
+    min-width: 180px;
+    max-width: 260px;
     padding: 15px; /* Add padding to make the input area more spacious */
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border: 1px solid #ddd; /* Optional: Add a border for better visual distinction */
     border-radius: 5px; /* Optional: Add border-radius for rounded corners */
-
+    box-sizing: border-box;
 }
 .input_group2 {
-    
     display: flex;
     flex-direction: column;
     margin: 10px; /* Add some margin for spacing between items */
-    flex: 1; /* Allow items to grow and take up available space */
-    min-width: 150px; /* Increase the minimum width for smaller screens */
-    max-width: 100px; /* Increase the maximum width to maintain alignment */
+    flex: 1 1 150px; /* Allow items to grow and shrink */
+    min-width: 140px;
+    max-width: 220px;
     padding: 10px; /* Add padding to make the input area more spacious */
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border: 1px solid #ddd; /* Optional: Add a border for better visual distinction */
     border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+    box-sizing: border-box;
 }
-
 
 .input_group label {
     margin-bottom: 5px;
     font-weight: bold;
-color: #2D2D2D;
-
+    color: #2d2d2d;
 }
 .input_group2 label {
     margin-bottom: 5px;
     font-weight: bold;
-color: #2D2D2D;
+    color: #2d2d2d;
 }
 .input_field {
     width: 100%;
@@ -92,24 +94,27 @@ color: #2D2D2D;
     flex-direction: row; /* Ensure items are in a row */
     overflow: hidden; /* Hide overflow to contain items within the marquee */
     white-space: nowrap; /* Prevent items from wrapping */
-    background-color: #2D2D2D; /* Background color for the marquee */
+    background-color: #2d2d2d; /* Background color for the marquee */
     padding: 10px; /* Adjust padding as needed */
-height: 100px;    
+    height: 100px;
 }
 
 .marh {
     position: relative; /* Ensure relative positioning for pseudo-element */
-    background-image: linear-gradient(to right, #C2D6F9, #5796FF); /* Gradient colors */
+    background-image: linear-gradient(
+        to right,
+        #c2d6f9,
+        #5796ff
+    ); /* Gradient colors */
     -webkit-background-clip: text; /* Use for Safari */
     background-clip: text; /* Clip text to gradient */
     color: transparent; /* Hide original text color */
     margin-right: 250px; /* Adjust spacing between items */
     font-size: 5em;
-
 }
 
 .marh::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     right: -170px; /* Adjust distance of line from text */
@@ -117,40 +122,57 @@ height: 100px;
     border-radius: 10px;
     height: 8px; /* Increase thickness of the line */
     width: 120px; /* Length of the line */
-    background-image: linear-gradient(to left, #5796FF, #C2D6F9); /* Gradient background color */
-    
+    background-image: linear-gradient(
+        to left,
+        #5796ff,
+        #c2d6f9
+    ); /* Gradient background color */
 }
 
 .hero_section {
-    color: rgb(15, 14, 14); /* Make text white for readability against dark background */
+    color: rgb(
+        15,
+        14,
+        14
+    ); /* Make text white for readability against dark background */
     text-align: center; /* Center the text horizontally */
     padding: 100px 0; /* Add some padding above and below the text */
     margin: 0 auto; /* Center the element horizontally and reset margin */
     margin-top: -130px; /* Adjust top margin to move the hero section up */
-  }
-  
-  .hero_section h1 {
+}
+
+.hero_section h1 {
+    font-family: var(--font-body);
+    font-weight: 600;
     font-size: 3em; /* Adjust font size as needed */
     margin-bottom: 20px; /* Add some space below the heading */
-  }
-  
-  .hero_section p {
+}
+
+.hero_section p {
     font-size: 1.2em; /* Adjust font size as needed */
     line-height: 1.5; /* Increase line height for better readability */
-  }
-  .highlight{
-    color:#007bff
-  }
-  newdiv{
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background: url('https://r4.wallpaperflare.com/wallpaper/396/917/215/porsche-porsche-taycan-turbo-blue-car-car-electric-car-hd-wallpaper-1ec8e37e750de53e8deaa201c9febe44.jpg') no-repeat center center;
-    background-size: cover;
-    padding: 20px;
-    min-height: 700px; /* Adjust this value as needed */
- }
+}
+.highlight {
+    font-family: var(--font-display);
+    color: #007bff;
+}
 
+@media (max-width: 768px) {
+    .hero_section h1 {
+        font-size: 2em;
+    }
 
- 
+    .marh {
+        font-size: 2.5em;
+        margin-right: 100px;
+    }
+
+    .marh::after {
+        right: -70px;
+        width: 60px;
+    }
+
+    .home_container {
+        max-width: 100%;
+    }
+}

@@ -1,5 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&display=swap");
+
+:root {
+  --font-display: "Archivo Black", "Archivo", sans-serif;
+  --font-body: "Archivo", "Sarabun", sans-serif;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  letter-spacing: -0.01em;
 }

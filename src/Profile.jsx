@@ -21,7 +21,7 @@ const Profile = () => {
         const fetchUserData = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:3000/users?isLoggedIn=true"
+                    `${import.meta.env.VITE_API_BASE_URL}/users?isLoggedIn=true`
                 );
                 if (!response.ok) {
                     throw new Error("Failed to fetch user data");
@@ -51,7 +51,7 @@ const Profile = () => {
     const handleUpdate = async () => {
         try {
             const response = await fetch(
-                `http://localhost:3000/users/${userData.id}`,
+                `${import.meta.env.VITE_API_BASE_URL}/users/${userData.id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -74,103 +74,106 @@ const Profile = () => {
 
     return (
         <>
-        <Navbarcomp/>
-        <div className={styles.header_image}>
-                <p>Profile</p>
+            <Navbarcomp />
+            <div className={styles.header_image}>
+                <h1>Profile</h1>
             </div>
             <div className={styles.main}>
-            <div className={styles.container}>
-                <div className={styles.profileForm}>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="name">Name:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={userData.name}
-                            onChange={handleInputChange}
-                            disabled={!isEditing}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="mobile">Mobile:</label>
-                        <input
-                            type="text"
-                            id="mobile"
-                            name="mobile"
-                            value={userData.mobile}
-                            onChange={handleInputChange}
-                            disabled={!isEditing}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={userData.email}
-                            onChange={handleInputChange}
-                            disabled={!isEditing}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="gender">Gender:</label>
-                        <select
-                            id="gender"
-                            name="gender"
-                            value={userData.gender}
-                            onChange={handleInputChange}
-                            disabled={!isEditing}
-                        >
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="city">City:</label>
-                        <input
-                            type="text"
-                            id="city"
-                            name="city"
-                            value={userData.city}
-                            onChange={handleInputChange}
-                            disabled={!isEditing}
-                        />
-                    </div>
-                    <div className={styles.buttonGroup}>
-                        {!isEditing ? (
-                            <button
-                                className={styles.editButton}
-                                onClick={() => setIsEditing(true)}
+                <div className={styles.container}>
+                    <div className={styles.profileForm}>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="name">Name:</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={userData.name}
+                                onChange={handleInputChange}
+                                disabled={!isEditing}
+                                className={styles.input}
+                            />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="mobile">Mobile:</label>
+                            <input
+                                type="text"
+                                id="mobile"
+                                name="mobile"
+                                value={userData.mobile}
+                                onChange={handleInputChange}
+                                disabled={!isEditing}
+                                className={styles.input}
+                            />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="email">Email:</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={userData.email}
+                                onChange={handleInputChange}
+                                disabled={!isEditing}
+                                className={styles.input}
+                            />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="gender">Gender:</label>
+                            <select
+                                id="gender"
+                                name="gender"
+                                value={userData.gender}
+                                onChange={handleInputChange}
+                                disabled={!isEditing}
                             >
-                                Edit
-                            </button>
-                        ) : (
-                            <>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="city">City:</label>
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                value={userData.city}
+                                onChange={handleInputChange}
+                                disabled={!isEditing}
+                                className={styles.input}
+                            />
+                        </div>
+                        <div className={styles.buttonGroup}>
+                            {!isEditing ? (
                                 <button
-                                    className={styles.updateButton}
-                                    onClick={handleUpdate}
+                                    className={styles.editButton}
+                                    onClick={() => setIsEditing(true)}
                                 >
-                                    Update
+                                    Edit
                                 </button>
-                                <button
-                                    className={styles.cancelButton}
-                                    onClick={() => setIsEditing(false)}
-                                >
-                                    Cancel
-                                </button>
-                            </>
-                        )}
-                    </div>
+                            ) : (
+                                <>
+                                    <button
+                                        className={styles.updateButton}
+                                        onClick={handleUpdate}
+                                    >
+                                        Update
+                                    </button>
+                                    <button
+                                        className={styles.cancelButton}
+                                        onClick={() => setIsEditing(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
-                </div>
+            </div>
 
             <ProfileSidebar userId={userData.id} isProfilePage={true} />
-            <AboutUs/>
-
+            <AboutUs />
         </>
     );
 };

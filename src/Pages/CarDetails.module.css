@@ -1,27 +1,43 @@
-/* Car details container */
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
+/* Container for the car details page */
 .car-details-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Sarabun', sans-serif;
-
+    font-family: "Sarabun", sans-serif;
 }
 
+/* Card for displaying car details */
 .car-details-card {
     background-color: #f0f0f0;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow: visible;
     width: 100%;
+    max-width: 1300px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
     padding: 20px;
+    position: relative;
+    height: auto;
+    box-sizing: border-box;
 }
 
+/* Main column: carousel, specs, features */
+.carmain {
+    display: flex;
+    flex-direction: column;
+    flex: 2 1 500px;
+    min-width: 0;
+}
+
+/* Carousel section with large image and thumbnails */
 .carousel {
     margin-left: 10px;
     margin-top: 10px;
@@ -29,15 +45,18 @@
     flex-direction: column;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    width: 40%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Large image styling */
 .large-image {
     width: 100%;
     max-width: 600px;
     height: auto;
 }
 
+/* Thumbnail images styling */
 .small-image {
     width: 100px;
     margin: 10px;
@@ -51,30 +70,59 @@
     border: 1px solid #000;
 }
 
+/* Reviews section with a button to show 3D model */
+.reviews-section {
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    align-items: center;
+    gap: 20px; /* Space between button and reviews */
+    margin-top: 20px;
+}
+
+/* Button to toggle 3D model */
+.show-3d-button {
+    width: 400px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-left: 20px;
+    margin-top: 30px;
+}
+
+.show-3d-button:hover {
+    background-color: #0056b3;
+}
+
+/* Customer reviews box styled as a square */
 .customer-reviews {
     border: 3px solid #b5afaf93;
-    margin-left: 200px;
-    margin-top: 20px;
     overflow: hidden;
-    width: 60%;
+    width: 400px; /* Adjust width to fit the square shape */
+    height: 480px; /* Set height to match width for a square shape */
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
-    box-sizing: border-box;
     padding: 20px;
     text-align: center;
-    max-height: 480px; /* Adjust this value as needed */
+    box-sizing: border-box;
+    align-items: center; /* Center the content horizontally */
+    justify-content: center; /* Center the content vertically */
 }
 
 .customer-reviews h3 {
-    font-size: 2em;
+    font-size: 1.5em; /* Adjust font size to fit the square shape */
     font-weight: bold;
-    text-align: center;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Handle overflow of text */
 }
 
+/* Car details section */
 .car-details {
     font-family: Arial, sans-serif;
     flex: 1;
@@ -87,6 +135,7 @@
     font-weight: bold;
 }
 
+/* Specifications section */
 .specifications span {
     font-size: 1.2em;
     margin-right: 20px;
@@ -103,28 +152,29 @@
     font-size: 1em;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Added alignment to center vertically */
+    align-items: center;
     padding: 8px 0;
 }
 
 .spec-item span:first-child {
-    flex-basis: 30%; /* Adjusted to accommodate longer text */
+    flex-basis: 30%;
 }
 
 .spec-item span:last-child {
-    flex-basis: 70%; /* Adjusted to accommodate longer text */
+    flex-basis: 70%;
     font-weight: bold;
 }
 
+/* Features section */
 .features {
-    margin-top: 70px;
+    margin-top: 40px; /* Space from the button */
     margin-left: 10px;
     border: 3px solid #b5afaf93;
     padding: 10px;
 }
 
 .features h3 {
-    font-size: 1.9em; /* Increase font size */
+    font-size: 1.9em;
     font-weight: bold;
     color: black;
 }
@@ -134,17 +184,18 @@
 }
 
 .feature-item {
-    font-size: 1.2em; /* Increase font size */
-    padding: 10px 0; /* Adjust padding as needed */
+    font-size: 1.2em;
+    padding: 10px 0;
     color: black;
 }
 
 .feature-item:before {
-    content: '✓ ';
+    content: "✓ ";
     color: blue;
     font-weight: bold;
 }
 
+/* Daily rate section */
 .daily-rate {
     background-color: #d7d6d6;
     padding: 15px 10px;
@@ -159,38 +210,91 @@
     background-color: #c3c1c1;
 }
 
+/* Booking details section */
 .booking-detail {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    border: 3px solid #b5afaf93;
+    justify-content: flex-start;
+    flex: 1 1 320px;
+    min-width: 300px;
 }
 
+@media (max-width: 900px) {
+    .car-details-card {
+        flex-direction: column;
+    }
+
+    .carmain,
+    .booking-detail {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+}
+
+/* Header image section */
 .header-image {
     width: 100%;
     max-height: 450px;
     overflow: hidden;
     display: flex;
-    justify-content: center; /* Center horizontally */
+    justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
     min-height: 50vh;
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)
-    ), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
-.header-image p {
-    font-size: 5em;
+.header-image h1 {
+    font-family: var(--font-display);
+    font-size: 3.2em;
     color: #ffffff;
+    text-align: center;
+    padding: 0 20px;
+    margin: 0;
+}
+
+/* Modal styling for 3D model viewer */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 700px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
 /* Responsive Styles */
@@ -228,8 +332,8 @@
         width: 100%;
     }
 
-    .header-image p {
-        font-size: 3em;
+    .header-image h1 {
+        font-size: 2.2em;
     }
 }
 
@@ -246,7 +350,7 @@
         padding: 8px;
     }
 
-    .header-image p {
-        font-size: 2em;
+    .header-image h1 {
+        font-size: 1.8em;
     }
 }

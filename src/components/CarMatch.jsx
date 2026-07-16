@@ -24,7 +24,7 @@ const CarMatch = (props) => {
             const fetchData = async () => {
                 try {
                     // Fetch data from the provided endpoint
-                    const response = await fetch("http://localhost:3000/cars");
+                    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/cars`);
                     const data = await response.json();
 
                     if (data && Array.isArray(data)) {
@@ -86,8 +86,14 @@ const CarMatch = (props) => {
             return best;
         }, null);
 
-        // Sort the list of cars by mileage in descending order
-        const sortedCars = filteredCars.sort((a, b) => {
+        // Keep only cars within budget, then sort by mileage descending
+        const withinBudgetCars = filteredCars.filter((car) => {
+            const pricing = parseFloat(car.pricing.replace(/\D/g, ""));
+            const totalCost = pricing * totalHours;
+            return totalCost <= maxRentalCost;
+        });
+
+        const sortedCars = withinBudgetCars.sort((a, b) => {
             const mileageA = parseFloat(a.mileage.split("-")[0].trim());
             const mileageB = parseFloat(b.mileage.split("-")[0].trim());
             return mileageB - mileageA;
@@ -136,30 +142,43 @@ const CarMatch = (props) => {
 
     return (
         <div className={styles.carMatchContainer}>
-            <h1>Car Data</h1>
+            <h1>Best Car Matches </h1>
             {newChat ? (
                 <p>Start a new chat to find car matches.</p>
             ) : fuelDetails.length > 0 ? (
-                <div className={styles.cardContainer}>
+                <ul className={styles.carList}>
                     {fuelDetails.map((car) => (
-                        <div className={styles.carCard} key={car.name}>
+                        <li className={styles.carListItem} key={car.name}>
                             <img
                                 src={car.image}
                                 alt={car.name}
                                 className={styles.carImage}
                             />
-                            <div className={styles.carInfo}>
+                            <div>
                                 <h2>{car.name}</h2>
-                                <p>Mileage: {car.mileage} km/l</p>
-                                <p>Fuel Required: {car.fuelRequired} liters</p>
-                                <p>Fuel Cost: ₹{car.fuelCost}</p>
-                                <p>Rental Cost: ₹{car.rentalCost}</p>
+                                <div className={styles.carDetails}>
+                                    <p className={styles.carDetailItem}>
+                                        Mileage: {car.mileage} km/l
+                                    </p>
+                                    <p className={styles.carDetailItem}>
+                                        Fuel Required: {car.fuelRequired} liters
+                                    </p>
+                                    <p className={styles.carDetailItem}>
+                                        Fuel Cost: ₹{car.fuelCost}
+                                    </p>
+                                    <p className={styles.carDetailItem}>
+                                        Rental Cost: ₹{car.rentalCost}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             ) : (
-                <p>No car details available.</p>
+                <p>
+                    No cars match your budget and number of people. Try
+                    increasing your budget or adjusting the group size.
+                </p>
             )}
         </div>
     );

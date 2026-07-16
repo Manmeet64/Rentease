@@ -18,7 +18,7 @@ const Login = () => {
         setShowGetStarted(false); // Reset the "Get Started" button visibility
 
         try {
-            const response = await fetch("http://localhost:3000/users");
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users`);
             if (response.ok) {
                 const users = await response.json();
                 console.log(users);
@@ -55,7 +55,7 @@ const Login = () => {
         try {
             // Fetch existing user data
             const userResponse = await fetch(
-                `http://localhost:3000/users/${userId}`
+                `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`
             );
             if (userResponse.ok) {
                 const userData = await userResponse.json();
@@ -65,7 +65,7 @@ const Login = () => {
 
                 // Send the updated user data back to the server
                 const updateResponse = await fetch(
-                    `http://localhost:3000/users/${userId}`,
+                    `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`,
                     {
                         method: "PUT",
                         headers: {
@@ -90,79 +90,94 @@ const Login = () => {
     };
 
     return (
-      <>
-        <div className={styles.loginContainer}>
-            <form onSubmit={handleLogin} className={styles.loginForm}>
-                <h2>Login</h2>
-                <div className={styles.inputGroup}>
-                    <label htmlFor="mobile">Mobile:</label>
-                    <input
-                        type="text"
-                        id="mobile"
-                        name="mobile"
-                        value={mobile}
-                        onChange={handleInputChange}
-                        pattern="[0-9]{10}"
-                        title="Enter a 10-digit mobile number."
-                        required
-                        className={styles.inputGroup}
-                    />
-                </div>
-                
-                <button type="submit" className={styles.loginButton}>
-                    Login
-                </button>
-                {message && <p className={styles.loginMessage}>{message}</p>}
-                {showGetStarted && (
-                    <Link to="/register" className={styles.getStartedLink}>
-                        <button type="button" className={styles.getStartedButton}>
-                            Get Started
-                        </button>
-                    </Link>
-                )}
-                <div className={styles.socialLoginContainer}>
-                    <hr className={styles.line} />
-                    <div className={styles.signUpWith}>Sign Up with</div>
-                    <div className={styles.socialLoginIcons}>
-                        <div className={styles.socialIconBox}>
-                            <button type="button" className={styles.socialLoginButton}>
-                                <a
-                                    href="https://www.google.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.socialLoginLink}
-                                >
-                                    <img
-                                        src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" // replace with actual URL
-                                        alt="Google Logo"
-                                        className={styles.socialIcon2}
-                                    />
-                                    <span className={styles.socialText}>Google</span>
-                                </a>
+        <>
+            <div className={styles.loginContainer}>
+                <form onSubmit={handleLogin} className={styles.loginForm}>
+                    <h2>Login</h2>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="mobile">Mobile:</label>
+                        <input
+                            type="text"
+                            id="mobile"
+                            name="mobile"
+                            value={mobile}
+                            onChange={handleInputChange}
+                            pattern="[0-9]{10}"
+                            title="Enter a 10-digit mobile number."
+                            required
+                            className={styles.inputGroup}
+                        />
+                    </div>
+
+                    <button type="submit" className={styles.loginButton}>
+                        Login
+                    </button>
+                    {message && (
+                        <p className={styles.loginMessage}>{message}</p>
+                    )}
+                    {showGetStarted && (
+                        <Link to="/register" className={styles.getStartedLink}>
+                            <button
+                                type="button"
+                                className={styles.getStartedButton}
+                            >
+                                Get Started
                             </button>
-                        </div>
-                        <div className={styles.socialIconBox}>
-                            <button type="button" className={styles.socialLoginButton}>
-                                <a
-                                    href="https://www.facebook.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.socialLoginLink}
+                        </Link>
+                    )}
+                    <div className={styles.socialLoginContainer}>
+                        <hr className={styles.line} />
+                        <div className={styles.signUpWith}>Sign Up with</div>
+                        <div className={styles.socialLoginIcons}>
+                            <div className={styles.socialIconBox}>
+                                <button
+                                    type="button"
+                                    className={styles.socialLoginButton}
                                 >
-                                    <img
-                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" // replace with actual URL
-                                        alt="Facebook Logo"
-                                        className={styles.socialIcon}
-                                    />
-                                    <span className={styles.socialText}>Facebook</span>
-                                </a>
-                            </button>
+                                    <a
+                                        href="https://www.google.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.socialLoginLink}
+                                    >
+                                        <img
+                                            src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" // replace with actual URL
+                                            alt="Google Logo"
+                                            className={styles.socialIcon2}
+                                        />
+                                        <span className={styles.socialText}>
+                                            Google
+                                        </span>
+                                    </a>
+                                </button>
+                            </div>
+                            <div className={styles.socialIconBox}>
+                                <button
+                                    type="button"
+                                    className={styles.socialLoginButton}
+                                >
+                                    <a
+                                        href="https://www.facebook.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.socialLoginLink}
+                                    >
+                                        <img
+                                            src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" // replace with actual URL
+                                            alt="Facebook Logo"
+                                            className={styles.socialIcon}
+                                        />
+                                        <span className={styles.socialText}>
+                                            Facebook
+                                        </span>
+                                    </a>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <AboutUs/>
+                </form>
+            </div>
+            <AboutUs />
         </>
     );
 };

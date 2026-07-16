@@ -8,7 +8,43 @@
       "gender": "female",
       "city": "NAVI MUMBAI",
       "profileImagePath": "src/assets/4be105af83e2afc1d8f9229dbb56ff77.jpg",
-      "isLoggedIn": false
+      "isLoggedIn": false,
+      "membership": {
+        "plan": "freemium",
+        "points": 0,
+        "badge1": {
+          "name": "Traveller-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/Traveller.jpeg"
+        },
+        "badge2": {
+          "name": "Early-Bird-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/EarlyBird.jpeg"
+        },
+        "badge3": {
+          "name": "Long-Tripper-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/LongTripper.jpeg"
+        },
+        "levels": {
+          "bronze": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/26/66/0d/26660de5735b578a2b9b8e06be424b07.jpg"
+          },
+          "silver": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/66/ff/da/66ffdad88ed4a1226698938aa3cd2870.jpg"
+          },
+          "gold": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/4a/79/50/4a795033aca7b684b9cfc67518b3e9b2.jpg"
+          }
+        }
+      }
     },
     {
       "id": "efbc",
@@ -18,7 +54,43 @@
       "gender": "male",
       "city": "NAVI MUMBAI",
       "profileImagePath": "src/assets/kisspng-suzuki-hayabusa-car-motorcycle-sport-bike-red-motorcycle-5ad9ece35da0c9.1563409015242313953835-removebg-preview.png",
-      "isLoggedIn": false
+      "isLoggedIn": false,
+      "membership": {
+        "plan": "freemium",
+        "points": 0,
+        "badge1": {
+          "name": "Traveller-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/Traveller.jpeg"
+        },
+        "badge2": {
+          "name": "Early-Bird-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/EarlyBird.jpeg"
+        },
+        "badge3": {
+          "name": "Long-Tripper-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/LongTripper.jpeg"
+        },
+        "levels": {
+          "bronze": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/26/66/0d/26660de5735b578a2b9b8e06be424b07.jpg"
+          },
+          "silver": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/66/ff/da/66ffdad88ed4a1226698938aa3cd2870.jpg"
+          },
+          "gold": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/4a/79/50/4a795033aca7b684b9cfc67518b3e9b2.jpg"
+          }
+        }
+      }
     },
     {
       "id": "8b35",
@@ -28,7 +100,43 @@
       "gender": "male",
       "city": "NAVI MUMBAI",
       "profileImagePath": "",
-      "isLoggedIn": false
+      "isLoggedIn": true,
+      "membership": {
+        "plan": "freemium",
+        "points": 12,
+        "badge1": {
+          "name": "Traveller-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/Traveller.jpeg"
+        },
+        "badge2": {
+          "name": "Early-Bird-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/EarlyBird.jpeg"
+        },
+        "badge3": {
+          "name": "Long-Tripper-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/LongTripper.jpeg"
+        },
+        "levels": {
+          "bronze": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/26/66/0d/26660de5735b578a2b9b8e06be424b07.jpg"
+          },
+          "silver": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/66/ff/da/66ffdad88ed4a1226698938aa3cd2870.jpg"
+          },
+          "gold": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/4a/79/50/4a795033aca7b684b9cfc67518b3e9b2.jpg"
+          }
+        }
+      }
     },
     {
       "id": "e0b1",
@@ -38,7 +146,43 @@
       "gender": "male",
       "city": "NAVI MUMBAI",
       "profileImagePath": "",
-      "isLoggedIn": false
+      "isLoggedIn": false,
+      "membership": {
+        "plan": "freemium",
+        "points": 0,
+        "badge1": {
+          "name": "Traveller-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/Traveller.jpeg"
+        },
+        "badge2": {
+          "name": "Early-Bird-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/EarlyBird.jpeg"
+        },
+        "badge3": {
+          "name": "Long-Tripper-Badge",
+          "active": false,
+          "validity": 0,
+          "img": "src/assets/LongTripper.jpeg"
+        },
+        "levels": {
+          "bronze": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/26/66/0d/26660de5735b578a2b9b8e06be424b07.jpg"
+          },
+          "silver": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/66/ff/da/66ffdad88ed4a1226698938aa3cd2870.jpg"
+          },
+          "gold": {
+            "active": false,
+            "img": "https://i.pinimg.com/564x/4a/79/50/4a795033aca7b684b9cfc67518b3e9b2.jpg"
+          }
+        }
+      }
     }
   ],
   "cars": [
@@ -1351,6 +1495,97 @@
       "userId": "45cb",
       "driver": "Rakesh Bhattacharya",
       "totalPrice": "7280.00"
+    },
+    {
+      "id": "9d2d",
+      "bookingId": "6uye3iy",
+      "pickUpLocation": "",
+      "dropOffLocation": "",
+      "pickUpDateTime": "2026-07-16T11:03",
+      "dropOffDateTime": "2026-07-16T11:03",
+      "rental_start_date": "2026-07-16",
+      "rental_end_date": "2026-07-16",
+      "duration": 0,
+      "booking_date": "",
+      "hoursDifference": null,
+      "status": "incomplete",
+      "carName": "Tata Tiago",
+      "userId": "8b35",
+      "isBooked": false,
+      "driver": false,
+      "carId": "104"
+    },
+    {
+      "id": "5503",
+      "bookingId": "fa8hys6",
+      "pickUpLocation": "CBD Belapur, Navi Mumbai, Maharashtra, India",
+      "dropOffLocation": "Nerul, Navi Mumbai, Maharashtra, India",
+      "pickUpDateTime": "2026-07-16T13:10",
+      "dropOffDateTime": "2026-07-16T15:10",
+      "rental_start_date": "2026-07-16",
+      "rental_end_date": "2026-07-16",
+      "duration": 0,
+      "booking_date": "",
+      "hoursDifference": 2,
+      "status": "incomplete",
+      "carName": "Tata Altroz",
+      "userId": "8b35",
+      "isBooked": false,
+      "carId": "101"
+    },
+    {
+      "id": "5e50",
+      "bookingId": "kw5va4d",
+      "pickUpLocation": "CBD Belapur, Navi Mumbai, Maharashtra, India",
+      "dropOffLocation": "Pune, Maharashtra, India",
+      "pickUpDateTime": "2026-07-16T13:21",
+      "dropOffDateTime": "2026-07-16T15:21",
+      "rental_start_date": "2026-07-16",
+      "rental_end_date": "2026-07-16",
+      "duration": 0,
+      "booking_date": "",
+      "hoursDifference": 2,
+      "status": "incomplete",
+      "carName": "",
+      "userId": "8b35",
+      "isBooked": false
+    },
+    {
+      "id": "b4e9",
+      "bookingId": "9a9yi4t",
+      "pickUpLocation": "CBD Belapur, Navi Mumbai, Maharashtra, India",
+      "dropOffLocation": "Pune, Maharashtra, India",
+      "pickUpDateTime": "2026-07-16T13:31",
+      "dropOffDateTime": "2026-07-16T15:31",
+      "rental_start_date": "2026-07-16",
+      "rental_end_date": "2026-07-16",
+      "duration": 0,
+      "booking_date": "",
+      "hoursDifference": 2,
+      "status": "incomplete",
+      "carName": "",
+      "userId": "8b35",
+      "isBooked": false
+    },
+    {
+      "id": "23a3",
+      "bookingId": "dpn23o9",
+      "pickUpLocation": "CBD Belapur, Navi Mumbai, Maharashtra, India",
+      "dropOffLocation": "Pune, Maharashtra, India",
+      "pickUpDateTime": "July 16, 2026 at 01:34 PM",
+      "dropOffDateTime": "July 16, 2026 at 03:34 PM",
+      "rental_start_date": "2026-07-16",
+      "rental_end_date": "2026-07-16",
+      "duration": 0,
+      "booking_date": "2026-07-16T13:38:46.269Z",
+      "hoursDifference": 2,
+      "status": "completed",
+      "carName": "Tata Altroz",
+      "userId": "8b35",
+      "isBooked": true,
+      "carId": "101",
+      "driver": "Sneha Ghosh",
+      "totalPrice": "460.00"
     }
   ],
   "drivers": [

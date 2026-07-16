@@ -1,5 +1,5 @@
 /* Import the Sarabun font */
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
 
 /* Base Styles */
 .about-us-container {
@@ -14,7 +14,7 @@
     color: black;
     position: relative;
     background-attachment: fixed;
-    font-family: 'Sarabun', sans-serif;
+    font-family: "Sarabun", sans-serif;
 }
 
 .about-us-container h2 {

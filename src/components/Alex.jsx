@@ -1,11 +1,26 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, act } from "react";
 import useSpeechToText from "./useSpeechToText";
 import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import Map from "./Map";
 import styles from "./Alex.module.css";
 import useGetLocation from "./useGetLocation";
 import Weather from "./Weather";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import Navbarcomp from "../components/Navbarcomp";
+import AboutUs from "../components/AboutUs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faMicrophone,
+    faStop,
+    faArrowRight,
+    faArrowLeft,
+    faPaperPlane,
+    faComments,
+    faL,
+} from "@fortawesome/free-solid-svg-icons";
+import { set } from "date-fns";
+
+const ALEX_MAP_LIBRARIES = ["places"];
+
 function Alex() {
     const [textInput1, setTextInput1] = useState(""); // Origin
     const [textInput2, setTextInput2] = useState(""); // Destination
@@ -18,6 +33,10 @@ function Alex() {
     const [spokenText5, setSpokenText5] = useState("");
     const [greetingText, setGreetingText] = useState("");
     const [isNewChat, setIsNewChat] = useState(false); // Track greeting text // Track greeting text
+    const [showChatDestinaton, setShowChatDestination] = useState(false);
+    const [showChatOrigin, setShowChatOrigin] = useState(false);
+    const [showChatBudget, setShowChatBudget] = useState(false);
+    const [showChatPeople, setShowChatPeople] = useState(false);
 
     const { isListening, transcript, startListening, stopListening } =
         useSpeechToText({ continuous: true });
@@ -28,6 +47,7 @@ function Alex() {
     const [showDestination, setShowDestination] = useState(false); // Track visibility of destination input field
     const [showBudget, setShowBudget] = useState(false); // Track visibility of budget input field
     const [showPeople, setShowPeople] = useState(false); // Track visibility of people input field
+    const [inputError, setInputError] = useState("");
 
     const [mapProps, setMapProps] = useState({
         origin: "",
@@ -118,7 +138,7 @@ function Alex() {
 
     function takeCommand(command) {
         if (command.includes("hello")) {
-            readOut("How may I help you today sir");
+            readOut("How may I help you today");
         }
     }
 
@@ -141,30 +161,58 @@ function Alex() {
 
     const handleEnter = () => {
         if (activeInput === 1) {
+            if (!textInput1.trim()) {
+                setInputError("Please enter a pickup location before continuing.");
+                return;
+            }
+            setInputError("");
             takeCommand(textInput1);
             const destinationMessage = "Enter destination";
             readOut(destinationMessage);
             setSpokenText2(destinationMessage);
+            setShowChatOrigin(true);
             setActiveInput(2);
             setShowDestination(true); // Show destination input field
         } else if (activeInput === 2) {
+            if (!textInput2.trim()) {
+                setInputError("Please enter a destination before continuing.");
+                return;
+            }
+            setInputError("");
             takeCommand(textInput2);
             const budgetMessage = "Enter your budget";
             readOut(budgetMessage);
             setSpokenText3(budgetMessage);
+            setShowChatDestination(true);
             setActiveInput(3);
             setShowBudget(true); // Show budget input field
         } else if (activeInput === 3) {
+            if (!budgetInput.trim() || isNaN(Number(budgetInput))) {
+                setInputError("Please enter a valid budget before continuing.");
+                return;
+            }
+            setInputError("");
             takeCommand(budgetInput);
             const peopleMessage = "Enter number of people";
             readOut(peopleMessage);
             setSpokenText4(peopleMessage);
+            setShowChatBudget(true);
             setActiveInput(4);
             setShowPeople(true); // Show people input field
         } else if (activeInput === 4) {
+            if (
+                !people.trim() ||
+                isNaN(Number(people)) ||
+                Number(people) <= 0
+            ) {
+                setInputError("Please enter a valid number of people before continuing.");
+                return;
+            }
+            setInputError("");
             takeCommand(people);
             const resultMessage = "This is the result I found";
             readOut(resultMessage);
+            setShowChatPeople(true);
             setSpokenText5(resultMessage);
             setMapProps({
                 origin: textInput1,
@@ -173,7 +221,6 @@ function Alex() {
                 budget: budgetInput,
             });
             setIsSubmitted(true);
-            console.log(budgetInput);
         }
     };
 
@@ -192,6 +239,7 @@ function Alex() {
     };
 
     const handleBack = () => {
+        setInputError("");
         if (activeInput === 2) {
             setActiveInput(1);
             setShowDestination(false); // Hide destination input field when going back
@@ -209,59 +257,83 @@ function Alex() {
 
     // Places API call code
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCi7wvXEC0r0td0KSSoeXzJNrUv5fYMNgw", // Replace with your actual API key
-        libraries: ["places"],
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+        libraries: ALEX_MAP_LIBRARIES,
     });
 
     const originRef = useRef();
     const destinationRef = useRef();
     const [choose, setChoose] = useState("");
-    const { location, error } = useGetLocation();
-    console.log("location", location);
+    const [locationSelectValue, setLocationSelectValue] = useState("");
+    const { location, error: locationError, status: locationStatus } =
+        useGetLocation();
 
-    const handleLocationChange = useCallback(() => {
-        const selected = document.getElementById("location");
-        if (
-            selected.value === "Current location" &&
-            location.latitude &&
-            location.longitude
-        ) {
-            setChoose("Your location");
-            originRef.current.value = `${location.latitude},${location.longitude}`;
-            let address_components_origin = [];
-            fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyCi7wvXEC0r0td0KSSoeXzJNrUv5fYMNgw` // Replace with your actual API key
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.results && data.results[0]) {
-                        address_components_origin =
-                            data.results[0].address_components;
-                        console.log(address_components_origin);
-                        originRef.current.value =
-                            data.results[0].formatted_address;
-                        console.log(data.results[0]);
-                        setTextInput1(originRef.current.value);
-                        const city = address_components_origin.find(
-                            (component) =>
-                                component.types.includes("locality") ||
-                                component.types.includes(
-                                    "administrative_level_3"
-                                )
-                        );
-                        console.log(city.long_name);
-                        setCity(city.long_name);
+    const fillOriginFromCoords = useCallback((latitude, longitude) => {
+        setChoose("Your location");
+        originRef.current.value = `${latitude},${longitude}`;
+        fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.results && data.results[0]) {
+                    const address_components_origin =
+                        data.results[0].address_components;
+                    originRef.current.value =
+                        data.results[0].formatted_address;
+                    setTextInput1(originRef.current.value);
+                    const cityComponent = address_components_origin.find(
+                        (component) =>
+                            component.types.includes("locality") ||
+                            component.types.includes(
+                                "administrative_level_3"
+                            )
+                    );
+                    if (cityComponent) {
+                        setCity(cityComponent.long_name);
                     }
-                })
-                .catch((err) => {
-                    console.log("Error:", err);
-                });
-        } else {
-            setChoose("Choose location");
-            originRef.current.value = "";
-            setTextInput1(originRef.current.value);
+                }
+            })
+            .catch((err) => {
+                console.error("Error reverse-geocoding location:", err);
+            });
+    }, []);
+
+    const handleLocationChange = useCallback(
+        (e) => {
+            const selectedValue = e.target.value;
+            setLocationSelectValue(selectedValue);
+
+            if (selectedValue !== "Current location") {
+                setChoose("Choose location");
+                originRef.current.value = "";
+                setTextInput1(originRef.current.value);
+                return;
+            }
+
+            if (locationStatus === "success" && location.latitude && location.longitude) {
+                fillOriginFromCoords(location.latitude, location.longitude);
+            }
+            // If location hasn't resolved yet (status is "loading"), the effect
+            // below will fill the field automatically once it does.
+        },
+        [location, locationStatus, fillOriginFromCoords]
+    );
+
+    // Auto-fill the origin the moment geolocation resolves, in case the user
+    // picked "Current location" before the browser's permission prompt settled.
+    useEffect(() => {
+        if (
+            locationSelectValue === "Current location" &&
+            locationStatus === "success" &&
+            location.latitude &&
+            location.longitude &&
+            originRef.current &&
+            !originRef.current.value
+        ) {
+            fillOriginFromCoords(location.latitude, location.longitude);
         }
-    }, [location]);
+    }, [locationSelectValue, locationStatus, location, fillOriginFromCoords]);
 
     const handleChat = () => {
         setTextInput1("");
@@ -279,12 +351,12 @@ function Alex() {
         setShowDestination(false);
         setShowBudget(false);
         setShowPeople(false);
+        setInputError("");
+        setLocationSelectValue("");
         setMapProps({
             origin: "",
             destination: "",
             people: "",
-            // latitude: null,
-            // longitude: null,
             budget: "",
         });
         setIsSubmitted(false);
@@ -299,13 +371,16 @@ function Alex() {
                 const address = originRef.current.value;
                 const formattedAddress = encodeURIComponent(address);
                 console.log(formattedAddress);
-                const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=AIzaSyCi7wvXEC0r0td0KSSoeXzJNrUv5fYMNgw`;
+                const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`;
                 let addressComponent = [];
 
                 fetch(url)
                     .then((response) => response.json())
                     .then((data) => {
                         console.log("Geocode API response:", data);
+                        if (!data.results || !data.results[0]) {
+                            return;
+                        }
                         addressComponent = data.results[0].address_components;
                         console.log(addressComponent);
                         const city = addressComponent.find(
@@ -315,8 +390,9 @@ function Alex() {
                                     "administrative_level_3"
                                 )
                         );
-                        console.log(city.long_name);
-                        setCity(city.long_name);
+                        if (city) {
+                            setCity(city.long_name);
+                        }
                     })
                     .catch((err) => {
                         console.log("Error:", err);
@@ -330,256 +406,577 @@ function Alex() {
     console.log(city);
     return (
         <>
-            <div className={styles.mainContainer}>
-                <div className={styles.map}>
-                    <Map
-                        origin={mapProps.origin}
-                        destination={mapProps.destination}
-                        latitude={mapProps.latitude}
-                        longitude={mapProps.longitude}
-                        people={mapProps.people}
-                        budget={mapProps.budget}
-                        chat={isNewChat ? true : false}
-                    />
-                </div>
-                <div className={styles.main}>
-                    {!showInputs && (
-                        <button className={styles.start} onClick={handleStart}>
-                            Start
-                        </button>
-                    )}
-
-                    {showInputs && (
-                        <>
-                            {greetingText && (
-                                <div className={styles["spoken-text"]}>
-                                    <p>{greetingText}</p>
-                                </div>
+            <Navbarcomp />
+            <div className={styles.headerimage}>
+                <p>Plan Your Trip</p>
+            </div>
+            <div className={styles.Alexcontainer}>
+                <div className={styles.mainContainer}>
+                    <div className={styles.map}>
+                        <Map
+                            origin={mapProps.origin}
+                            destination={mapProps.destination}
+                            latitude={mapProps.latitude}
+                            longitude={mapProps.longitude}
+                            people={mapProps.people}
+                            budget={mapProps.budget}
+                            chat={isNewChat ? true : false}
+                        />
+                    </div>
+                    <div className={styles.mainchat}>
+                        <div className={styles.main1}>
+                            <h1 className={styles.chatheading}>Alex VA</h1>
+                            <div className={styles.chatScroll}>
+                            {!showInputs && (
+                                <button
+                                    className={styles.start}
+                                    onClick={handleStart}
+                                >
+                                    Start
+                                </button>
                             )}
 
-                            <div className={styles["inputs-container"]}>
-                                <div className={styles.choose}>
-                                    <select
-                                        name="location"
-                                        id="location"
-                                        onChange={handleLocationChange}
-                                        defaultValue="Select location"
-                                    >
-                                        <option
-                                            value="Select location"
-                                            disabled
+                            {showInputs && (
+                                <>
+                                    {greetingText && (
+                                        <div
+                                            className={`${styles["chat-message"]} ${styles.question}`}
                                         >
-                                            Select location
-                                        </option>
-                                        <option value="Current location">
-                                            Current location
-                                        </option>
-                                        <option value="Choose location">
-                                            Choose location
-                                        </option>
-                                    </select>
-                                </div>
-                                <Autocomplete
-                                    onLoad={(autocomplete) =>
-                                        (autocompleteRef1.current =
-                                            autocomplete)
-                                    }
-                                    onPlaceChanged={handlePlaceChanged1}
-                                >
-                                    <input
-                                        type="text"
-                                        name="voiceInput1"
-                                        id="v-input1"
-                                        placeholder="Origin"
-                                        ref={originRef}
-                                        value={
-                                            isListening && activeInput === 1
-                                                ? textInput1 +
-                                                  (transcript.length
-                                                      ? (textInput1.length
-                                                            ? " "
-                                                            : "") + transcript
-                                                      : "")
-                                                : textInput1
-                                        }
-                                        onChange={(e) =>
-                                            setTextInput1(e.target.value)
-                                        }
-                                        className={styles.input} // Apply class
-                                        disabled={
-                                            isListening || activeInput !== 1
-                                        } // Disable when listening or not active
-                                    />
-                                </Autocomplete>
-                                <div
-                                    className={styles["spoken-text"]}
-                                    style={
-                                        spokenText2 === ""
-                                            ? { display: "none" }
-                                            : { display: "block" }
-                                    }
-                                >
-                                    <p>{spokenText2}</p>
-                                </div>
-                                {showDestination && (
-                                    <Autocomplete
-                                        onLoad={(autocomplete) =>
-                                            (autocompleteRef2.current =
-                                                autocomplete)
-                                        }
-                                        onPlaceChanged={handlePlaceChanged2}
-                                    >
-                                        <input
-                                            type="text"
-                                            name="voiceInput2"
-                                            id="v-input2"
-                                            placeholder="Destination"
-                                            ref={destinationRef}
-                                            value={
-                                                isListening && activeInput === 2
-                                                    ? textInput2 +
-                                                      (transcript.length
-                                                          ? (textInput2.length
-                                                                ? " "
-                                                                : "") +
-                                                            transcript
-                                                          : "")
-                                                    : textInput2
-                                            }
-                                            onChange={(e) =>
-                                                setTextInput2(e.target.value)
-                                            }
-                                            className={styles.input} // Apply class
-                                            disabled={
-                                                isListening || activeInput !== 2
-                                            } // Disable when listening or not active
-                                        />
-                                    </Autocomplete>
-                                )}
-                                <div
-                                    className={styles["spoken-text"]}
-                                    style={
-                                        spokenText3 === ""
-                                            ? { display: "none" }
-                                            : { display: "block" }
-                                    }
-                                >
-                                    <p>{spokenText3}</p>
-                                </div>
-                                {showBudget && (
-                                    <input
-                                        type="text"
-                                        name="budgetInput"
-                                        id="budget-input"
-                                        placeholder="Budget"
-                                        value={
-                                            isListening && activeInput === 3
-                                                ? budgetInput +
-                                                  (transcript.length
-                                                      ? (budgetInput.length
-                                                            ? " "
-                                                            : "") + transcript
-                                                      : "")
-                                                : budgetInput
-                                        }
-                                        onChange={(e) =>
-                                            setBudgetInput(e.target.value)
-                                        }
-                                        className={styles.input} // Apply class
-                                        disabled={
-                                            isListening || activeInput !== 3
-                                        } // Disable when listening or not active
-                                    />
-                                )}
-                                <div
-                                    className={styles["spoken-text"]}
-                                    style={
-                                        spokenText4 === ""
-                                            ? { display: "none" }
-                                            : { display: "block" }
-                                    }
-                                >
-                                    <p>{spokenText4}</p>
-                                </div>
-                                {showPeople && (
-                                    <input
-                                        type="text"
-                                        name="peopleInput"
-                                        id="people-input"
-                                        placeholder="Number of people"
-                                        value={
-                                            isListening && activeInput === 4
-                                                ? people +
-                                                  (transcript.length
-                                                      ? (people.length
-                                                            ? " "
-                                                            : "") + transcript
-                                                      : "")
-                                                : people
-                                        }
-                                        onChange={(e) =>
-                                            setPeople(e.target.value)
-                                        }
-                                        className={styles.input} // Apply class
-                                        disabled={
-                                            isListening || activeInput !== 4
-                                        } // Disable when listening or not active
-                                    />
-                                )}
+                                            <p>{greetingText}</p>
+                                        </div>
+                                    )}
+
+                                    <div className={styles["inputs-container"]}>
+                                        <div
+                                            className={`${styles["chat-message"]} ${styles.question}`}
+                                        >
+                                            <div
+                                                className={
+                                                    styles["select-container"]
+                                                }
+                                            >
+                                                <select
+                                                    name="location"
+                                                    id="location"
+                                                    onChange={
+                                                        handleLocationChange
+                                                    }
+                                                    defaultValue="Select location"
+                                                >
+                                                    <option
+                                                        value="Select location"
+                                                        disabled
+                                                    >
+                                                        Select location
+                                                    </option>
+                                                    <option value="Current location">
+                                                        Current location
+                                                    </option>
+                                                    <option value="Choose location">
+                                                        Choose location
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            {locationSelectValue ===
+                                                "Current location" && (
+                                                <p
+                                                    className={
+                                                        styles.locationStatus
+                                                    }
+                                                >
+                                                    {locationStatus ===
+                                                        "loading" &&
+                                                        "Getting your location..."}
+                                                    {locationStatus ===
+                                                        "error" &&
+                                                        "Location unavailable — please choose your address manually."}
+                                                    {locationStatus ===
+                                                        "success" &&
+                                                        "Location found."}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        {showChatOrigin && (
+                                            <div
+                                                className={`${styles["chat-message"]} ${styles.response}`}
+                                            >
+                                                <Autocomplete
+                                                    onLoad={(autocomplete) =>
+                                                        (autocompleteRef1.current =
+                                                            autocomplete)
+                                                    }
+                                                    onPlaceChanged={
+                                                        handlePlaceChanged1
+                                                    }
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="voiceInput1"
+                                                        id="v-input1"
+                                                        placeholder="Origin"
+                                                        ref={originRef}
+                                                        value={
+                                                            isListening &&
+                                                            activeInput === 1
+                                                                ? textInput1 +
+                                                                  (transcript.length
+                                                                      ? (textInput1.length
+                                                                            ? " "
+                                                                            : "") +
+                                                                        transcript
+                                                                      : "")
+                                                                : textInput1
+                                                        }
+                                                        onChange={(e) =>
+                                                            setTextInput1(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className={styles.input}
+                                                        disabled={
+                                                            isListening ||
+                                                            activeInput !== 1
+                                                        }
+                                                    />
+                                                </Autocomplete>
+                                            </div>
+                                        )}
+                                        <div
+                                            className={`${styles["chat-message"]} ${styles.question}`}
+                                        >
+                                            <p
+                                                style={{
+                                                    opacity: showChatOrigin
+                                                        ? "1"
+                                                        : "0",
+                                                }}
+                                            >
+                                                {spokenText2}
+                                            </p>
+                                        </div>
+
+                                        {showChatDestinaton && (
+                                            <>
+                                                <div
+                                                    className={`${styles["chat-message"]} ${styles.response}`}
+                                                >
+                                                    <Autocomplete
+                                                        onLoad={(
+                                                            autocomplete
+                                                        ) =>
+                                                            (autocompleteRef2.current =
+                                                                autocomplete)
+                                                        }
+                                                        onPlaceChanged={
+                                                            handlePlaceChanged2
+                                                        }
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            name="voiceInput2"
+                                                            id="v-input2"
+                                                            placeholder="Destination"
+                                                            ref={destinationRef}
+                                                            value={
+                                                                isListening &&
+                                                                activeInput ===
+                                                                    2
+                                                                    ? textInput2 +
+                                                                      (transcript.length
+                                                                          ? (textInput2.length
+                                                                                ? " "
+                                                                                : "") +
+                                                                            transcript
+                                                                          : "")
+                                                                    : textInput2
+                                                            }
+                                                            onChange={(e) =>
+                                                                setTextInput2(
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            className={
+                                                                styles.input
+                                                            }
+                                                            disabled={
+                                                                isListening ||
+                                                                activeInput !==
+                                                                    2
+                                                            }
+                                                        />
+                                                    </Autocomplete>
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {showBudget && (
+                                            <>
+                                                <div
+                                                    className={`${styles["chat-message"]} ${styles.question}`}
+                                                >
+                                                    <p
+                                                        style={{
+                                                            opacity:
+                                                                showChatDestinaton
+                                                                    ? "1"
+                                                                    : "0",
+                                                        }}
+                                                    >
+                                                        {spokenText3}
+                                                    </p>
+                                                </div>
+                                                {showChatBudget && (
+                                                    <div
+                                                        className={`${styles["chat-message"]} ${styles.response}`}
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            name="budgetInput"
+                                                            id="budget-input"
+                                                            placeholder="Budget"
+                                                            value={
+                                                                isListening &&
+                                                                activeInput ===
+                                                                    3
+                                                                    ? budgetInput +
+                                                                      (transcript.length
+                                                                          ? (budgetInput.length
+                                                                                ? " "
+                                                                                : "") +
+                                                                            transcript
+                                                                          : "")
+                                                                    : budgetInput
+                                                            }
+                                                            onChange={(e) =>
+                                                                setBudgetInput(
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            className={
+                                                                styles.input
+                                                            }
+                                                            disabled={
+                                                                isListening ||
+                                                                activeInput !==
+                                                                    3
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+
+                                        {showPeople && (
+                                            <>
+                                                <div
+                                                    className={`${styles["chat-message"]} ${styles.question}`}
+                                                >
+                                                    <p
+                                                        style={{
+                                                            opacity:
+                                                                showChatBudget
+                                                                    ? "1"
+                                                                    : "0",
+                                                        }}
+                                                    >
+                                                        {spokenText4}
+                                                    </p>
+                                                </div>
+                                                {showChatPeople && (
+                                                    <div
+                                                        className={`${styles["chat-message"]} ${styles.response}`}
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            name="peopleInput"
+                                                            id="people-input"
+                                                            placeholder="Number of people"
+                                                            value={
+                                                                isListening &&
+                                                                activeInput ===
+                                                                    4
+                                                                    ? people +
+                                                                      (transcript.length
+                                                                          ? (people.length
+                                                                                ? " "
+                                                                                : "") +
+                                                                            transcript
+                                                                          : "")
+                                                                    : people
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPeople(
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            className={
+                                                                styles.input
+                                                            }
+                                                            disabled={
+                                                                isListening ||
+                                                                activeInput !==
+                                                                    4
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+
+                                        <div
+                                            className={`${styles["chat-message"]} ${styles.question}`}
+                                        >
+                                            <p
+                                                style={{
+                                                    opacity: showChatPeople
+                                                        ? "1"
+                                                        : "0",
+                                                }}
+                                            >
+                                                {spokenText5}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.weather}>
+                                        {isSubmitted && <Weather city={city} />}
+                                    </div>
+                                    <div className={styles.typingsection}>
+                                        {activeInput === 1 && (
+                                            <div
+                                                className={`${styles["chat-message"]} ${styles.response}`}
+                                            >
+                                                <Autocomplete
+                                                    onLoad={(autocomplete) =>
+                                                        (autocompleteRef1.current =
+                                                            autocomplete)
+                                                    }
+                                                    onPlaceChanged={
+                                                        handlePlaceChanged1
+                                                    }
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="voiceInput1"
+                                                        id="v-input1"
+                                                        placeholder="Origin"
+                                                        ref={originRef}
+                                                        value={
+                                                            isListening &&
+                                                            activeInput === 1
+                                                                ? textInput1 +
+                                                                  (transcript.length
+                                                                      ? (textInput1.length
+                                                                            ? " "
+                                                                            : "") +
+                                                                        transcript
+                                                                      : "")
+                                                                : textInput1
+                                                        }
+                                                        onChange={(e) =>
+                                                            setTextInput1(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className={
+                                                            styles.usermessage
+                                                        }
+                                                        disabled={
+                                                            isListening ||
+                                                            activeInput !== 1
+                                                        }
+                                                    />
+                                                </Autocomplete>
+                                            </div>
+                                        )}
+                                        {activeInput === 2 && (
+                                            <div
+                                                className={`${styles["chat-message"]} ${styles.response}`}
+                                            >
+                                                <Autocomplete
+                                                    onLoad={(autocomplete) =>
+                                                        (autocompleteRef2.current =
+                                                            autocomplete)
+                                                    }
+                                                    onPlaceChanged={
+                                                        handlePlaceChanged2
+                                                    }
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="voiceInput2"
+                                                        id="v-input2"
+                                                        placeholder="Destination"
+                                                        ref={destinationRef}
+                                                        value={
+                                                            isListening &&
+                                                            activeInput === 2
+                                                                ? textInput2 +
+                                                                  (transcript.length
+                                                                      ? (textInput2.length
+                                                                            ? " "
+                                                                            : "") +
+                                                                        transcript
+                                                                      : "")
+                                                                : textInput2
+                                                        }
+                                                        onChange={(e) =>
+                                                            setTextInput2(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className={
+                                                            styles.usermessage
+                                                        }
+                                                        disabled={
+                                                            isListening ||
+                                                            activeInput !== 2
+                                                        }
+                                                    />
+                                                </Autocomplete>
+                                            </div>
+                                        )}
+                                        {activeInput === 3 && (
+                                            <>
+                                                <div
+                                                    className={`${styles["chat-message"]} ${styles.response}`}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="budgetInput"
+                                                        id="budget-input"
+                                                        placeholder="Budget"
+                                                        value={
+                                                            isListening &&
+                                                            activeInput === 3
+                                                                ? budgetInput +
+                                                                  (transcript.length
+                                                                      ? (budgetInput.length
+                                                                            ? " "
+                                                                            : "") +
+                                                                        transcript
+                                                                      : "")
+                                                                : budgetInput
+                                                        }
+                                                        onChange={(e) =>
+                                                            setBudgetInput(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className={
+                                                            styles.usermessage
+                                                        }
+                                                        disabled={
+                                                            isListening ||
+                                                            activeInput !== 3
+                                                        }
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
+                                        {activeInput === 4 && (
+                                            <>
+                                                <div
+                                                    className={`${styles["chat-message"]} ${styles.response}`}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="peopleInput"
+                                                        id="people-input"
+                                                        placeholder="Number of people"
+                                                        value={
+                                                            isListening &&
+                                                            activeInput === 4
+                                                                ? people +
+                                                                  (transcript.length
+                                                                      ? (people.length
+                                                                            ? " "
+                                                                            : "") +
+                                                                        transcript
+                                                                      : "")
+                                                                : people
+                                                        }
+                                                        onChange={(e) =>
+                                                            setPeople(
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className={
+                                                            styles.usermessage
+                                                        }
+                                                        disabled={
+                                                            isListening ||
+                                                            activeInput !== 4
+                                                        }
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
+                                        {inputError && (
+                                            <p className={styles.inputError}>
+                                                {inputError}
+                                            </p>
+                                        )}
+                                        <div className={styles.btns}>
+                                            <button
+                                                className={styles.speak}
+                                                onClick={startStopListening}
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={
+                                                        isListening
+                                                            ? faStop
+                                                            : faMicrophone
+                                                    }
+                                                />{" "}
+                                                {isListening ? "" : ""}
+                                            </button>
+                                            <button
+                                                className={styles.speak}
+                                                onClick={handleEnter}
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={faArrowRight}
+                                                />{" "}
+                                                {activeInput === 1 ||
+                                                activeInput === 2 ||
+                                                activeInput === 3
+                                                    ? ""
+                                                    : ""}
+                                            </button>
+                                            {spokenText5 !== "" && (
+                                                <button
+                                                    className={styles.speak}
+                                                    onClick={handleChat}
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={faComments}
+                                                    />
+                                                </button>
+                                            )}
+                                            {/* {activeInput > 1 && (
+                                                <button
+                                                    className={styles.speak}
+                                                    onClick={handleBack}
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={faArrowLeft}
+                                                    />
+                                                </button>
+                                            )} */}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                             </div>
-                            <div
-                                className={styles["spoken-text"]}
-                                style={
-                                    spokenText5 === ""
-                                        ? { display: "none" }
-                                        : { display: "block" }
-                                }
-                            >
-                                <p>{spokenText5}</p>
-                            </div>
-                            <div className={styles.btns}>
-                                <button
-                                    className={styles.speak}
-                                    onClick={startStopListening}
-                                >
-                                    {isListening ? "Stop listening" : "Speak"}
-                                </button>
-                                <button
-                                    className={styles.speak}
-                                    onClick={handleEnter}
-                                >
-                                    {activeInput === 1
-                                        ? "Next"
-                                        : activeInput === 2
-                                        ? "Next"
-                                        : activeInput === 3
-                                        ? "Next"
-                                        : "Submit"}
-                                </button>
-                                {spokenText5 !== "" && (
-                                    <button
-                                        className={styles.speak}
-                                        onClick={handleChat}
-                                    >
-                                        New Chat
-                                    </button>
-                                )}
-                                {activeInput > 1 && (
-                                    <button
-                                        className={styles.speak}
-                                        onClick={handleBack}
-                                    >
-                                        Back
-                                    </button>
-                                )}
-                            </div>
-                        </>
-                    )}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className={styles.weather}>
-                {isSubmitted && <Weather city={city} />}
-            </div>
+            <AboutUs />
         </>
     );
 }
